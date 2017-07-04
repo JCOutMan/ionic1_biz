@@ -2,21 +2,47 @@ var gulp = require('gulp');
 var browserSync = require('browser-sync').create();
 var proxy = require('http-proxy-middleware');
 var express = require('express');
+var sass = require('gulp-sass');
 var app = express();
+var dirname = './www';
+var bwSyncLs = [
+    dirname + '/scss/*',
+    dirname + '/pages/*/*'
+]
 
-gulp.task('browser-sync', () => {
-// 静态服务器
-    browserSync.init({
-        server: {
-            baseDir: "./"
-        }
-    });
+gulp.task('sass:watch', () => {
+    gulp.watch(dirname + '/scss/*', ['sass']);
 });
 
-gulp.task('http-proxy', () => {
-  app.use('/api', proxy({target:'http://www.example.org/api', changeOrigin:true}));
-  app.get('/', '')
-  app.listen(3000);
+gulp.task('sass', () => {
+    gulp.src(dirname + '/scss/*.scss')
+        .pipe(sass({
+            outputStyle: 'compressed'
+        })
+            .on('error', sass.logError))
+        .pipe(gulp.dest(dirname + '/css'));
 })
 
-gulp.task('default', ['browser-sync', 'http-proxy']);
+var option = {
+    target: 'http://j.jimutour.com'
+}
+
+gulp.task('browser-sync', () => {
+    browserSync.init({
+        server: {
+            baseDir: dirname,
+            middleware: proxy('/api', option)
+
+        }
+    });
+
+    gulp.watch(bwSyncLs).on('change', browserSync.reload);
+});
+
+
+gulp.task('proxy', () => {
+    app.use('/api', proxy(option));
+    app.listen(3001);
+});
+
+gulp.task('default', ['sass', 'sass:watch', 'browser-sync']);
