@@ -1,0 +1,18 @@
+.login-content{
+  background: url('../res/img/bg.jpg');
+  background-size: 100% 100%;
+  background-position: 0 0;
+
+  .list{
+    margin: 70px auto;
+    width: 90%;
+    top: 30%;
+    .btn-box{
+      text-align: center;
+      .button{
+        margin: 10px;
+      }
+
+    }
+  }
+}
