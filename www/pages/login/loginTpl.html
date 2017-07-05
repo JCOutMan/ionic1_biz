@@ -3,15 +3,15 @@
     <div class="list">
       <label class="item item-input">
         <span class="input-label">Username</span>
-        <input type="text">
+        <input type="text" ng-model="info.uname">
       </label>
       <label class="item item-input">
         <span class="input-label">Password</span>
-        <input type="password">
+        <input type="password" ng-model="info.pwd">
       </label>
 
       <div class="btn-box">
-        <button class="button button-positive">
+        <button class="button button-positive" ng-click="login()">
           login
         </button>
       </div>
