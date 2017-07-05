@@ -24,14 +24,15 @@ gulp.task('sass', () => {
 })
 
 var option = {
-    target: 'http://j.jimutour.com'
+    target: 'http://j.jimutour.com',
+    changeOrigin: true
 }
 
 gulp.task('browser-sync', () => {
     browserSync.init({
         server: {
             baseDir: dirname,
-            middleware: proxy('/api', option)
+            middleware: proxy('/businessapi', option)
 
         }
     });
